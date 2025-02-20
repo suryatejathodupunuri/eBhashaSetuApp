@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, ScrollView, Text, StatusBar, Platform, View } from 'react-native';
 import Navigation from './src/navigation/Navigation';
 import Navbar from './src/components/Header';
-
 import SplashScreen from './src/screens/SplashScreen';
-
+import { NavigationContainer } from '@react-navigation/native';
 const App = () => {
   const [isSplashVisible, setIsSplashVisible] = useState(true);
 
@@ -31,12 +30,13 @@ const App = () => {
             <Navbar />
           </View>
           
-          {/* Main content and Navigation below the Navbar */}
           <ScrollView contentContainerStyle={styles.mainContent}>
-            {/* Your custom content here */}
 
             {/* Add Navigation component below the text */}
-            <Navigation />
+            \
+            <NavigationContainer>
+              
+              </NavigationContainer>
           </ScrollView>
         </>
       )}

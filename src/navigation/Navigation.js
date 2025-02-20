@@ -1,23 +1,16 @@
-// src/navigation/Navigation.jsx
 import React from 'react';
-import { View, StyleSheet } from 'react-native';
-import MainScreen from '../screens/MainScreen'; // Adjust the path to where MainPage.js is located
-import Transliteration from '../screens/Transliteration';
-const Navigation = () => {
-  return (
-    <View style={styles.container}>
-      <Transliteration></Transliteration>
-    </View>
-  );
-};
+import { createStackNavigator } from '@react-navigation/stack';
+import MainScreen from '../screens/MainScreen';
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-});
+const Stack = createStackNavigator();
+
+const Navigation = () => {
+    return (
+
+        <Stack.Navigator screenOptions={{ headerShown: false }}>
+            <Stack.Screen name="Main Screen" component={MainScreen} />
+        </Stack.Navigator>
+    );
+};
 
 export default Navigation;

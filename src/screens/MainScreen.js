@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 
-const MainScreen = () => {
+const MainScreen = ({ navigation }) => {
   const tools = [
     'Translation',
     'Transliteration',
@@ -15,23 +15,25 @@ const MainScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Heading */}
       <Text style={styles.heading}>Our Tools</Text>
-
-      {/* Scrollable Grid Container */}
       <ScrollView contentContainerStyle={styles.gridContainer}>
         {tools.map((tool, index) => (
-          <TouchableOpacity key={index} style={[styles.square, { backgroundColor: '#A2D9F7' }]}>
+          <TouchableOpacity
+            key={index}
+            style={[styles.square, { backgroundColor: '#A2D9F7' }]}
+            onPress={() => {
+              if (tool === 'Transliteration') {
+                navigation.navigate('Transliteration');
+              }
+            }}
+          >
             <Text style={styles.label}>{tool}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
-
-      
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
