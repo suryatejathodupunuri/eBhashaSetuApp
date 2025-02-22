@@ -6,25 +6,12 @@ import axios from 'axios';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 
 const langMap = {
-  asm: "Assamese",
-  ben: "Bengali",
-  bod: "Bodo",
-  guj: "Gujarati",
   hin: "Hindi",
-  kan: "Kannada",
-  kok: "Konkani",
-  mal: "Malayalam",
-  mar: "Marathi",
-  nep: "Nepali",
-  ori: "Oriya",
-  pan: "Punjabi",
-  eng: "Roman(ENG)",
-  tam: "Tamil",
-  tel: "Telugu",
+  lod: "Lodhi",
   urd: "Urdu",
 };
 
-const Transliteration = () => {
+const Translation2 = () => {
   const [inputLang, setInputLang] = useState("");
   const [outputLang, setOutputLang] = useState("");
   const [fileContent, setFileContent] = useState("");
@@ -48,15 +35,15 @@ const Transliteration = () => {
     }
 
     try {
-      const response = await axios.post('https://transliteration.ebslab.in/api/transliterate', {
+      const response = await axios.post('https://smt.ebslab.in/api/smttranslate', {
         src: inputLang,
         tar: outputLang,
         inp: fileContent,
       });
-      setResponseData(response.data[0].output);
+      setResponseData(response.data[0].output.text);
       Toast.show({
         text1: "Success",
-        text2: "Transliteration completed!",
+        text2: "Translation completed!",
         type: 'success',
       });
     } catch (error) {
@@ -71,7 +58,7 @@ const Transliteration = () => {
 
   return (
     <ScrollView style={styles.container}>  
-      <Text style={styles.heading}>Transliteration</Text>
+      <Text style={styles.heading}>Translation(SMT)</Text>
       
       <View style={styles.languageBox}>
         <View style={styles.languageDropdownContainer}>
@@ -110,7 +97,7 @@ const Transliteration = () => {
           onChangeText={setFileContent}
         />
         <TouchableOpacity style={styles.translateButton} onPress={handleSubmit}>
-          <Text style={styles.buttonText}>Transliterate</Text>
+          <Text style={styles.buttonText}>Translate</Text>
         </TouchableOpacity>
       </View>
       
@@ -118,7 +105,7 @@ const Transliteration = () => {
         <Text style={styles.label}>{langMap[outputLang] || "Output Language"}</Text>
         <TextInput
           style={[styles.textInput, styles.textOutput]}
-          placeholder="Transliterated text will appear here"
+          placeholder="Translated text will appear here"
           multiline
           editable={false}
           value={responseData}
@@ -205,4 +192,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Transliteration;
+export default Translation2;

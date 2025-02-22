@@ -1,12 +1,16 @@
-import React from 'react';
-import { View, Image, StyleSheet } from 'react-native';
-
-// Import the logo from your assets folder
-import logo from '../../assets/splash-icon.png'; // Update with the correct path
+import React, { useEffect, useState } from 'react';
+import { View, Image, StyleSheet, StatusBar, Platform } from 'react-native';
+import logo from '../../assets/splash-icon.png';
 
 const Header = () => {
+  const [statusBarHeight, setStatusBarHeight] = useState(Platform.OS === 'android' ? StatusBar.currentHeight : 0);
+
+  useEffect(() => {
+    StatusBar.setBarStyle('light-content');
+  }, []);
+
   return (
-    <View style={styles.navbar}>
+    <View style={[styles.navbar, { paddingTop: statusBarHeight }]}>
       <View style={styles.logoContainer}>
         <Image source={logo} style={styles.logo} />
       </View>
@@ -17,19 +21,23 @@ const Header = () => {
 const styles = StyleSheet.create({
   navbar: {
     flexDirection: 'row',
-    justifyContent: 'center', // Centers the logo horizontally
-    alignItems: 'center', // Vertically centers the logo
-    paddingVertical: 10, // Padding for top and bottom
-    backgroundColor: '#333', // Navbar background color
-    height: 50, // Reduced height of navbar
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#333',
+    height: 65, // Fixed height ensures it does not expand initially
+    elevation: 4,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
   },
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   logo: {
-    width: 80, // Adjust logo size if needed
-    height: 30,
+    width: 90, // Adjusted size for better fit
+    height: 35,
     resizeMode: 'contain',
   },
 });

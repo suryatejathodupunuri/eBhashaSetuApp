@@ -1,11 +1,12 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { StatusBar } from "expo-status-bar";
+import { View, Text, StyleSheet, StatusBar } from "react-native";
 
 const ComingSoonScreen = () => {
   return (
     <View style={styles.container}>
-      <StatusBar style="light" />
+      {/* Maintain StatusBar settings for this screen only */}
+      <StatusBar backgroundColor="transparent" translucent={true} barStyle="light-content" />
+      
       <View style={styles.textContainer}>
         <Text style={styles.title}>COMING</Text>
         <Text style={styles.title}>SOON</Text>
@@ -17,11 +18,11 @@ const ComingSoonScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    flex: 1, // Ensures the screen only takes available space below the header
     backgroundColor: "#0D3B66",
     padding: 20,
+    justifyContent: "center", // Centers content in remaining space
+    alignItems: "center",
   },
   textContainer: {
     justifyContent: "center",

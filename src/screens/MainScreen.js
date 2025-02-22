@@ -1,21 +1,28 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
+import { 
+  StyleSheet, 
+  View, 
+  Text, 
+  TouchableOpacity, 
+  SafeAreaView, 
+  ScrollView 
+} from 'react-native';
 
 const MainScreen = ({ navigation }) => {
   const tools = [
-    { name: 'Translation', screen: 'Translation' },
-    { name: 'Transliteration', screen: null },
-    { name: 'Content Creation', screen: null },
-    { name: 'Text-to-Speech', screen: null },
-    { name: 'Speech-to-Text', screen: null },
-    { name: 'Subtitling', screen: null },
-    { name: 'Localization', screen: null },
-    { name: 'Transcription', screen: null },
+    { name: 'Translation (NMT)', screen: 'Translation' },
+    { name: 'Translation (SMT)', screen: 'Translation2' },
+    { name: 'Transliteration', screen: 'Transliteration' },
+    { name: 'Content Creation', screen: 'ComingSoon' },
+    { name: 'Speech-to-Text', screen: 'ComingSoon' },
+    { name: 'Subtitling', screen: 'ComingSoon' },
+    { name: 'Localization', screen: 'ComingSoon' },
+    { name: 'Transcription', screen: 'ComingSoon' },
   ];
 
   const handlePress = (tool) => {
     if (tool.screen) {
-      navigation.navigate(tool.screen); // Navigate to Translation.js
+      navigation.navigate(tool.screen);
     }
   };
 
@@ -25,9 +32,10 @@ const MainScreen = ({ navigation }) => {
       
       <ScrollView contentContainerStyle={styles.gridContainer}>
         {tools.map((tool, index) => (
-          <TouchableOpacity
-            key={index}
-            style={styles.tile}
+          <TouchableOpacity 
+            key={index} 
+            style={styles.tile} 
+            activeOpacity={0.7} 
             onPress={() => handlePress(tool)}
           >
             <Text style={styles.label}>{tool.name}</Text>
@@ -39,11 +47,45 @@ const MainScreen = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#FFFFFF', paddingHorizontal: 20, paddingTop: 20 },
-  heading: { fontSize: 24, fontWeight: 'bold', color: '#333333', textAlign: 'center', marginBottom: 20 },
-  gridContainer: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', paddingBottom: 80 },
-  tile: { width: '48%', height: 140, borderRadius: 20, justifyContent: 'center', alignItems: 'center', backgroundColor: '#A2D9F7', marginBottom: 15 },
-  label: { fontSize: 18, fontWeight: 'bold', color: '#333333', textAlign: 'center' },
+  container: {
+    flex: 1,
+    backgroundColor: '#F5F7FA',
+    paddingHorizontal: 20,
+    paddingTop: 20,
+  },
+  heading: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    color: '#1A374D',
+    textAlign: 'center',
+    marginBottom: 20,
+  },
+  gridContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'space-between',
+    paddingBottom: 80,
+  },
+  tile: {
+    width: '48%',
+    height: 140,
+    borderRadius: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#A2D9F7',
+    marginBottom: 15,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  label: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#1A374D',
+    textAlign: 'center',
+  },
 });
 
 export default MainScreen;
