@@ -4,6 +4,8 @@ import Navigation from './src/navigation/Navigation';
 import Navbar from './src/components/Header';
 import SplashScreen from './src/screens/SplashScreen';
 import { NavigationContainer } from '@react-navigation/native';
+import Transliteration from './src/screens/Transliteration';
+import MainScreen from './src/screens/MainScreen';
 const App = () => {
   const [isSplashVisible, setIsSplashVisible] = useState(true);
 
@@ -35,7 +37,7 @@ const App = () => {
             {/* Add Navigation component below the text */}
             \
             <NavigationContainer>
-              
+              <MainScreen></MainScreen>
               </NavigationContainer>
           </ScrollView>
         </>
