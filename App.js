@@ -1,43 +1,34 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, StyleSheet, ScrollView, Text, StatusBar, Platform, View } from 'react-native';
-import Navigation from './src/navigation/Navigation';
-import Navbar from './src/components/Header';
+import { SafeAreaView, StyleSheet, StatusBar, Platform, View } from 'react-native';
 import SplashScreen from './src/screens/SplashScreen';
-import { NavigationContainer } from '@react-navigation/native';
+import Navigation from './src/navigation/Navigation';
+import Header from './src/components/Header';
+
 const App = () => {
   const [isSplashVisible, setIsSplashVisible] = useState(true);
 
   useEffect(() => {
-    
     const timer = setTimeout(() => {
       setIsSplashVisible(false);
     }, 2000);
 
-    return () => clearTimeout(timer); 
+    return () => clearTimeout(timer);
   }, []);
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="light-content" translucent={true} />
-
-      {/* Show splash screen while it's visible */}
+      {/* Ensure the system's status bar is visible */}
+      <StatusBar barStyle="dark-content" backgroundColor="transparent" translucent={false} />
+      
       {isSplashVisible ? (
         <SplashScreen />
       ) : (
         <>
-          {/* Navbar visible after splash screen */}
-          <View style={{ paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }}>
-            <Navbar />
-          </View>
-          
-          <ScrollView contentContainerStyle={styles.mainContent}>
+          {/* Header Component */}
+          <Header />
 
-            {/* Add Navigation component below the text */}
-            \
-            <NavigationContainer>
-              
-              </NavigationContainer>
-          </ScrollView>
+          {/* Bottom Tab Navigation */}
+          <Navigation />
         </>
       )}
     </SafeAreaView>
@@ -48,15 +39,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-  mainContent: {
-    paddingTop: 20, 
-    paddingHorizontal: 15,
-    paddingBottom: 20, 
-  },
-  text: {
-    fontSize: 18,
-    color: '#333',
   },
 });
 

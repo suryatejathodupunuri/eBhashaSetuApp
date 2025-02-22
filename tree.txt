@@ -1,0 +1,29 @@
+.
+├── App.js
+├── app.json
+├── assets
+│   ├── adaptive-icon.png
+│   ├── auth-bg.jpg
+│   ├── favicon.png
+│   ├── icon.png
+│   ├── splash-icon.png
+│   └── swap-icon.png
+├── index.js
+├── package.json
+├── package-lock.json
+├── README.md
+├── src
+│   ├── components
+│   │   └── Header.js
+│   ├── navigation
+│   │   └── Navigation.js
+│   └── screens
+│       ├── AuthScreen.js
+│       ├── ComingSoon.js
+│       ├── MainScreen.js
+│       ├── SplashScreen.js
+│       ├── Translation.js
+│       └── Transliteration.js
+
+
+

@@ -4,7 +4,7 @@ import { View, Image, StyleSheet } from 'react-native';
 // Import the logo from your assets folder
 import logo from '../../assets/splash-icon.png'; // Update with the correct path
 
-const Navbar = () => {
+const Header = () => {
   return (
     <View style={styles.navbar}>
       <View style={styles.logoContainer}>
@@ -34,4 +34,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Navbar;
+export default Header;
