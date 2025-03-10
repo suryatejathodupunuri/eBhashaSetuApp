@@ -4,6 +4,7 @@ import { Dropdown } from 'react-native-element-dropdown';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import * as Clipboard from 'expo-clipboard';
 
 const langMap = {
   asm: "Assamese",
@@ -33,15 +34,15 @@ const Transliteration = () => {
   const swapLanguages = () => {
     setInputLang(outputLang);
     setOutputLang(inputLang);
-    setFileContent(responseData); // Move output text to input field
-    setResponseData(""); // Clear output field
+    setFileContent(responseData);
+    setResponseData("");
   };
 
   const handleSubmit = async () => {
     if (!inputLang || !outputLang || inputLang === outputLang || !fileContent) {
       Toast.show({
         text1: "Error",
-        text2: "Please ensure all fields are filled correctly.",
+        text2: "Please select different languages and enter text.",
         type: 'error',
       });
       return;
@@ -53,24 +54,27 @@ const Transliteration = () => {
         tar: outputLang,
         inp: fileContent,
       });
-      setResponseData(response.data[0].output);
+      setResponseData(response.data[0].output || "No output received");
       Toast.show({
         text1: "Success",
         text2: "Transliteration completed!",
         type: 'success',
       });
     } catch (error) {
-      console.error("Error:", error);
+      let errorMessage = "Server down, please try again later.";
+      if (error.response) {
+        errorMessage = error.response.data?.message || "API Error";
+      }
       Toast.show({
         text1: "Error",
-        text2: "Server down, Please try after sometime.",
+        text2: errorMessage,
         type: 'error',
       });
     }
   };
 
   return (
-    <ScrollView style={styles.container}>  
+    <ScrollView style={styles.container}>
       <Text style={styles.heading}>Transliteration</Text>
       
       <View style={styles.languageBox}>
@@ -84,8 +88,8 @@ const Transliteration = () => {
             value={inputLang}
             onChange={item => setInputLang(item.value)}
           />
-          <TouchableOpacity onPress={swapLanguages}>
-            <FontAwesome5 name="exchange-alt" size={24} color="#007bff" />
+          <TouchableOpacity style={styles.swapButton} onPress={swapLanguages}>
+            <FontAwesome5 name="exchange-alt" size={22} color="#007bff" />
           </TouchableOpacity>
           <Dropdown
             style={styles.dropdown}
@@ -124,85 +128,31 @@ const Transliteration = () => {
           value={responseData}
         />
         <View style={styles.iconContainer}>
-          <TouchableOpacity>
-            <MaterialIcons name="content-copy" size={20} color="#007bff" />
+          <TouchableOpacity onPress={() => Clipboard.setStringAsync(responseData)}>
+            <MaterialIcons name="content-copy" size={24} color="#007bff" />
           </TouchableOpacity>
         </View>
       </View>
-
+      
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 20,
-    backgroundColor: '#ffffff',
-  },
-  heading: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 20,
-  },
-  languageBox: {
-    backgroundColor: '#fff',
-    padding: 10,
-    borderRadius: 15,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-    shadowRadius: 5,
-    marginBottom: 20,
-  },
-  languageDropdownContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  dropdown: {
-    width: '40%',
-  },
-  textBox: {
-    backgroundColor: '#f8f9fa',
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 20,
-  },
-  label: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  textInput: {
-    minHeight: 130,
-    borderWidth: 1,
-    borderColor: '#ccc',
-    borderRadius: 5,
-    padding: 10,
-    backgroundColor: '#fff',
-  },
-  textOutput: {
-    minHeight: 150, // Increased height for better readability
-  },
-  translateButton: {
-    backgroundColor: '#ff6600',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 10,
-    alignItems: 'center',
-  },
-  buttonText: {
-    color: '#fff',
-    fontWeight: 'bold',
-  },
-  iconContainer: {
-    flexDirection: 'row',
-    justifyContent: 'flex-end',
-    marginTop: 10,
-  },
+  container: { flex: 1, padding: 10, backgroundColor: '#ffffff' },
+  heading: { fontSize: 22, fontWeight: 'bold', textAlign: 'center', marginVertical: 5 },
+  languageBox: { backgroundColor: '#fff', padding: 10, borderRadius: 15, elevation: 3 },
+  languageDropdownContainer: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  dropdown: { flex: 1, marginHorizontal: 5 },
+  swapButton: { padding: 10 },
+  textBox: { backgroundColor: '#f8f9fa', padding: 10, borderRadius: 10, marginBottom: 20 },
+  label: { fontSize: 16, fontWeight: 'bold', marginBottom: 10 },
+  textInput: { minHeight: 130, borderWidth: 1, borderColor: '#ccc', borderRadius: 5, backgroundColor: '#fff', padding: 10 },
+  textOutput: { minHeight: 150 },
+  translateButton: { backgroundColor: '#ff6600', padding: 12, borderRadius: 8, marginTop: 10, alignItems: 'center' },
+  buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
+  iconContainer: { flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10 },
 });
 
 export default Transliteration;
