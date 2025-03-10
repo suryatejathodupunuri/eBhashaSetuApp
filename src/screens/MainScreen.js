@@ -1,12 +1,5 @@
 import React from 'react';
-import { 
-  StyleSheet, 
-  View, 
-  Text, 
-  TouchableOpacity, 
-  SafeAreaView, 
-  ScrollView 
-} from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, SafeAreaView, ScrollView } from 'react-native';
 
 const MainScreen = ({ navigation }) => {
   const tools = [
@@ -20,24 +13,13 @@ const MainScreen = ({ navigation }) => {
     { name: 'Transcription', screen: 'ComingSoon' },
   ];
 
-  const handlePress = (tool) => {
-    if (tool.screen) {
-      navigation.navigate(tool.screen);
-    }
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <Text style={styles.heading}>Our Tools</Text>
-      
+
       <ScrollView contentContainerStyle={styles.gridContainer}>
         {tools.map((tool, index) => (
-          <TouchableOpacity 
-            key={index} 
-            style={styles.tile} 
-            activeOpacity={0.7} 
-            onPress={() => handlePress(tool)}
-          >
+          <TouchableOpacity key={index} style={styles.tile} activeOpacity={0.7} onPress={() => navigation.navigate(tool.screen)}>
             <Text style={styles.label}>{tool.name}</Text>
           </TouchableOpacity>
         ))}
@@ -75,7 +57,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#A2D9F7',
     marginBottom: 15,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 3 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
     elevation: 5,

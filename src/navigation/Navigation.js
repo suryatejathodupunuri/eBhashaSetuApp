@@ -8,53 +8,50 @@ import Translation from '../screens/Translation';
 import ComingSoon from '../screens/ComingSoon';
 import Transliteration from '../screens/Transliteration';
 import Translation2 from '../screens/Translation2';
+
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
 
-const MainStack = () => {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="MainScreen" component={MainScreen} />
-      <Stack.Screen name="Translation" component={Translation} />
-      <Stack.Screen name="Transliteration" component={Transliteration} />
-      <Stack.Screen name="Translation2" component={Translation2} />
-      <Stack.Screen name="ComingSoon" component={ComingSoon} />
-    </Stack.Navigator>
-  );
-};
+const MainStack = () => (
+  <Stack.Navigator screenOptions={{ headerShown: false }}>
+    <Stack.Screen name="MainScreen" component={MainScreen} />
+    <Stack.Screen name="Translation" component={Translation} />
+    <Stack.Screen name="Transliteration" component={Transliteration} />
+    <Stack.Screen name="Translation2" component={Translation2} />
+    <Stack.Screen name="ComingSoon" component={ComingSoon} />
+  </Stack.Navigator>
+);
 
-const BottomTabNavigator = () => {
-  return (
-    <Tab.Navigator
-      screenOptions={({ route }) => ({
-        headerShown: false,
-        tabBarStyle: { backgroundColor: '#333', paddingBottom: 5, height: 50 },
-        tabBarLabelStyle: { fontSize: 12, fontWeight: 'bold', color: '#fff' },
-        tabBarIcon: ({ color, size, focused }) => {
-          let iconName;
-          if (route.name === 'Home') {
-            iconName = focused ? 'home' : 'home-outline';
-          } else if (route.name === 'Menu') {
-            iconName = focused ? 'menu' : 'menu';
-          }
-          return <MaterialCommunityIcons name={iconName} color={color} size={size} />;
-        },
-        tabBarActiveTintColor: '#A2D9F7', // Active color
-        tabBarInactiveTintColor: '#bbb', // Inactive color
-      })}
-    >
-      <Tab.Screen name="Home" component={MainStack} />
-      <Tab.Screen name="Menu" component={ComingSoon} />
-    </Tab.Navigator>
-  );
-};
+const BottomTabNavigator = () => (
+  <Tab.Navigator
+    screenOptions={({ route }) => ({
+      headerShown: false,
+      tabBarStyle: {
+        backgroundColor: '#1A374D',
+        paddingBottom: 8,
+        height: 60,
+      },
+      tabBarLabelStyle: {
+        fontSize: 12,
+        fontWeight: 'bold',
+      },
+      tabBarIcon: ({ color, size, focused }) => {
+        let iconName = route.name === 'Home' ? 'home' : 'menu';
+        return <MaterialCommunityIcons name={iconName} color={color} size={size} />;
+      },
+      tabBarActiveTintColor: '#A2D9F7',
+      tabBarInactiveTintColor: '#bbb',
+    })}
+  >
+    <Tab.Screen name="Home" component={MainStack} />
+    <Tab.Screen name="Menu" component={ComingSoon} />
+  </Tab.Navigator>
+);
 
-const Navigation = () => {
-  return (
-    <NavigationContainer>
-      <BottomTabNavigator />
-    </NavigationContainer>
-  );
-};
+const Navigation = () => (
+  <NavigationContainer>
+    <BottomTabNavigator />
+  </NavigationContainer>
+);
 
 export default Navigation;

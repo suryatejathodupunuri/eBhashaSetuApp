@@ -23,21 +23,21 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#333',
-    height: 65, // Fixed height ensures it does not expand initially
+    backgroundColor: '#1A374D',
+    height: 70,
     elevation: 4,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.1,
-    shadowRadius: 3,
+    shadowOpacity: 0.2,
+    shadowRadius: 4,
   },
   logoContainer: {
     justifyContent: 'center',
     alignItems: 'center',
   },
   logo: {
-    width: 90, // Adjusted size for better fit
-    height: 35,
+    width: 100,
+    height: 40,
     resizeMode: 'contain',
   },
 });

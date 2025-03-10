@@ -9,8 +9,7 @@ const App = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#333" barStyle="light-content" translucent={false} />
-
+      <StatusBar backgroundColor="#1A374D" barStyle="light-content" translucent={false} />
       {isSplashVisible ? (
         <SplashScreen onFinish={() => setIsSplashVisible(false)} />
       ) : (
@@ -26,7 +25,7 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#F5F7FA',
   },
 });
 
