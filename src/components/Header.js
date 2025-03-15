@@ -1,13 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { View, Image, StyleSheet, StatusBar, Platform } from 'react-native';
+import React from 'react';
+import { View, Image, StyleSheet, Platform, StatusBar } from 'react-native';
 import logo from '../../assets/splash-icon.png';
 
 const Header = () => {
-  const [statusBarHeight, setStatusBarHeight] = useState(Platform.OS === 'android' ? StatusBar.currentHeight : 0);
-
-  useEffect(() => {
-    StatusBar.setBarStyle('light-content');
-  }, []);
+  // Calculate status bar height for Android
+  const statusBarHeight = Platform.OS === 'android' ? StatusBar.currentHeight : 0;
 
   return (
     <View style={[styles.navbar, { paddingTop: statusBarHeight }]}>
@@ -24,10 +21,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1A374D',
-    height: 70,
+    height: Platform.OS === 'android' ? 30 + StatusBar.currentHeight : 70, // Adjust height for Android
     elevation: 4,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 1 },
+    shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.2,
     shadowRadius: 4,
   },

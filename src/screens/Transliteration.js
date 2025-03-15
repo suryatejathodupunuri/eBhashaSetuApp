@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, ScrollView, Animated } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
 import Toast from 'react-native-toast-message';
@@ -7,9 +7,23 @@ import { MaterialIcons, FontAwesome5, AntDesign } from '@expo/vector-icons';
 import * as Clipboard from 'expo-clipboard';
 
 const langMap = {
-  asm: "অ - Assamese", ben: "ব - Bengali", bod: "བོད - Bodo", guj: "ગ - Gujarati", hin: "अ - Hindi",
-  kan: "ಕ - Kannada", kok: "कों - Konkani", mal: "മ - Malayalam", mar: "म - Marathi", nep: "न - Nepali",
-  ori: "ଓ - Oriya", pan: "ਪ - Punjabi", eng: "A - Roman(ENG)", tam: "அ - Tamil", tel: "అ - Telugu", urd: "ا - Urdu"
+  asm: "অ - Assamese",  
+  ben: "অ - Bengali",  
+  bod: "ཀ - Bodo",  
+  guj: "અ - Gujarati",  
+  hin: "अ - Hindi",  
+  kan: "ಅ - Kannada",  
+  kok: "क - Konkani",  
+  mal: "അ - Malayalam",  
+  mar: "अ - Marathi",  
+  nep: "अ - Nepali",  
+  ori: "ଅ - Oriya",  
+  pan: "ਅ - Punjabi",  
+  eng: "A - Roman(ENG)",  
+  tam: "அ - Tamil",  
+  tel: "అ - Telugu",  
+  urd: "\u200Eا - Urdu" // Add LEFT-TO-RIGHT MARK before Urdu text
+  
 };
 
 const Transliteration = () => {
@@ -19,6 +33,7 @@ const Transliteration = () => {
   const [responseData, setResponseData] = useState("");
   const [showOutput, setShowOutput] = useState(false); // Controls output visibility
   const [buttonScale] = useState(new Animated.Value(1));
+  const toastRef = useRef(); // Create a ref for Toast
 
   const swapLanguages = () => {
     setInputLang(outputLang);
@@ -36,6 +51,10 @@ const Transliteration = () => {
   const handleSubmit = async () => {
     if (!inputLang || !outputLang || inputLang === outputLang || !fileContent) {
       Toast.show({ text1: "Error", text2: "Please select different languages and enter text.", type: 'error' });
+      return;
+    }
+    if (fileContent.length > 5000) {
+      Toast.show({ text1: "Error", text2: "Character limit exceeded (max 5000).", type: 'error' });
       return;
     }
     try {
@@ -68,23 +87,33 @@ const Transliteration = () => {
           <Dropdown
             style={styles.dropdown}
             data={Object.entries(langMap).map(([key, value]) => ({ label: value, value: key }))}
-            labelField="label" valueField="value" placeholder="Input Language"
-            value={inputLang} onChange={item => setInputLang(item.value)}
+            labelField="label"
+            valueField="value"
+            placeholder="Input Language"
+            value={inputLang}
+            onChange={item => setInputLang(item.value)}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             iconStyle={styles.iconStyle}
+            itemTextStyle={styles.itemTextStyle} // Added for better text rendering
+            itemContainerStyle={styles.itemContainerStyle} // Added for better dropdown items
           />
           <TouchableOpacity style={styles.swapButton} onPress={swapLanguages}>
-            <FontAwesome5 name="exchange-alt" size={22} color="#007bff" />
+            <FontAwesome5 name="exchange-alt" size={22} color="#1fbaec" />
           </TouchableOpacity>
           <Dropdown
             style={styles.dropdown}
             data={Object.entries(langMap).map(([key, value]) => ({ label: value, value: key }))}
-            labelField="label" valueField="value" placeholder="Output Language"
-            value={outputLang} onChange={item => setOutputLang(item.value)}
+            labelField="label"
+            valueField="value"
+            placeholder="Output Language"
+            value={outputLang}
+            onChange={item => setOutputLang(item.value)}
             placeholderStyle={styles.placeholderStyle}
             selectedTextStyle={styles.selectedTextStyle}
             iconStyle={styles.iconStyle}
+            itemTextStyle={styles.itemTextStyle} // Added for better text rendering
+            itemContainerStyle={styles.itemContainerStyle} // Added for better dropdown items
           />
         </View>
       </View>
@@ -92,22 +121,22 @@ const Transliteration = () => {
       {/* Input Text Area */}
       <View style={styles.textBox}>
         <View style={styles.textHeader}>
-          <View style={{ flex: 1 }} /> {/* Spacer to push clear button to the right */}
+          <TextInput
+            style={styles.textInput}
+            placeholder="Enter Source text here"
+            placeholderTextColor="#999"
+            multiline
+            maxLength={5000}
+            value={fileContent}
+            onChangeText={setFileContent}
+          />
           {fileContent !== "" && (
-            <TouchableOpacity onPress={clearText}>
-              <AntDesign name="closecircle" size={20} color="red" />
+            <TouchableOpacity onPress={clearText} style={styles.clearButton}>
+              <AntDesign name="closecircle" size={20} color="#ff4444" />
             </TouchableOpacity>
           )}
         </View>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Enter Source text here"
-          placeholderTextColor="#999"
-          multiline
-          maxLength={5000}
-          value={fileContent}
-          onChangeText={setFileContent}
-        />
+        <Text style={styles.charCount}>{fileContent.length}/5000</Text>
         <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
           <TouchableOpacity
             style={styles.translateButton}
@@ -131,25 +160,26 @@ const Transliteration = () => {
           />
           <View style={styles.iconContainer}>
             <TouchableOpacity onPress={() => Clipboard.setStringAsync(responseData)}>
-              <MaterialIcons name="content-copy" size={24} color="#007bff" />
+              <MaterialIcons name="content-copy" size={24} color="#1fbaec" />
             </TouchableOpacity>
           </View>
         </View>
       )}
       
-      <Toast ref={(ref) => Toast.setRef(ref)} />
+      {/* Toast Component with Forwarded Ref */}
+      <Toast ref={toastRef} />
     </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: '#f5f5f5' },
-  contentContainer: { padding: 20 },
-  heading: { fontSize: 26, fontWeight: 'bold', textAlign: 'center', marginVertical: 10, color: '#333' },
+  container: { flex: 1, backgroundColor: '#F5F7FA' },
+  contentContainer: { padding: 16, paddingTop: 10 }, // Reduced padding above the title
+  heading: { fontSize: 26, fontWeight: 'bold', textAlign: 'center', marginBottom: 16, color: '#1A374D' }, // Adjusted margin
   languageBox: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 15,
+    backgroundColor: '#ffffff',
+    padding: 12, // Reduced padding
+    borderRadius: 12,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -163,46 +193,63 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     width: '40%',
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     borderRadius: 8,
-    paddingHorizontal: 10,
+    paddingHorizontal: 8, // Reduced padding
+    height: 40, // Reduced height
   },
-  placeholderStyle: { color: '#999', fontSize: 16 },
-  selectedTextStyle: { color: '#333', fontSize: 16 },
+  placeholderStyle: { color: '#999', fontSize: 14 }, // Smaller font size
+  selectedTextStyle: { color: '#1A374D', fontSize: 14 }, // Smaller font size
   iconStyle: { width: 20, height: 20 },
-  swapButton: { padding: 12 },
+  itemTextStyle: { color: '#1A374D', fontSize: 14 }, // Smaller font size
+  itemContainerStyle: { paddingVertical: 8 }, // Reduced padding
+  swapButton: { padding: 8 }, // Reduced padding
   textBox: {
-    backgroundColor: '#fff',
-    padding: 15,
-    borderRadius: 10,
-    marginTop: 15,
+    backgroundColor: '#ffffff',
+    padding: 12, // Reduced padding
+    borderRadius: 12,
+    marginTop: 12, // Reduced margin
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
     elevation: 3,
   },
-  textHeader: { flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center' },
+  textHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   textInput: {
-    minHeight: 130,
-    borderWidth: 1,
-    borderColor: '#ddd',
+    flex: 1,
+    minHeight: 120, // Fixed height
     borderRadius: 8,
-    backgroundColor: '#fff',
+    backgroundColor: '#ffffff',
     padding: 10,
     fontSize: 16,
-    color: '#333',
+    color: '#1A374D',
   },
-  textOutput: { minHeight: 150 },
+  clearButton: {
+    position: 'absolute',
+    right: 10,
+    top: 10,
+  },
+  charCount: {
+    textAlign: 'right',
+    fontSize: 14,
+    color: '#999',
+    marginTop: 4,
+  },
+  textOutput: { minHeight: 120 }, // Fixed height
   translateButton: {
-    backgroundColor: '#007bff',
-    padding: 15,
+    backgroundColor: '#1fbaec',
+    padding: 12, // Reduced padding
     borderRadius: 8,
     marginTop: 10,
     alignItems: 'center',
   },
-  buttonText: { color: '#fff', fontSize: 16, fontWeight: 'bold' },
-  iconContainer: { flexDirection: 'row', justifyContent: 'flex-end', marginTop: 10 },
+  buttonText: { color: '#ffffff', fontSize: 16, fontWeight: 'bold' },
+  iconContainer: { flexDirection: 'row', justifyContent: 'flex-end', marginTop: 8 }, // Reduced margin
 });
 
 export default Transliteration;

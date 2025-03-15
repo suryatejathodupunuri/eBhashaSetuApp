@@ -30,6 +30,12 @@ const BottomTabNavigator = () => (
         backgroundColor: '#1A374D',
         paddingBottom: 8,
         height: 60,
+        borderTopWidth: 0,
+        elevation: 10,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
       },
       tabBarLabelStyle: {
         fontSize: 12,
@@ -39,7 +45,7 @@ const BottomTabNavigator = () => (
         let iconName = route.name === 'Home' ? 'home' : 'menu';
         return <MaterialCommunityIcons name={iconName} color={color} size={size} />;
       },
-      tabBarActiveTintColor: '#A2D9F7',
+      tabBarActiveTintColor: '#1fbaec', // Updated to your primary color
       tabBarInactiveTintColor: '#bbb',
     })}
   >
