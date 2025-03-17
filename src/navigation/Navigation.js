@@ -8,6 +8,7 @@ import Translation from '../screens/Translation';
 import ComingSoon from '../screens/ComingSoon';
 import Transliteration from '../screens/Transliteration';
 import Translation2 from '../screens/Translation2';
+import AboutUs from '../screens/AboutUs';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -18,7 +19,7 @@ const MainStack = () => (
     <Stack.Screen name="Translation" component={Translation} />
     <Stack.Screen name="Transliteration" component={Transliteration} />
     <Stack.Screen name="Translation2" component={Translation2} />
-    <Stack.Screen name="ComingSoon" component={ComingSoon} />
+    <Stack.Screen name="ComingSoon" component={AboutUs} />
   </Stack.Navigator>
 );
 
